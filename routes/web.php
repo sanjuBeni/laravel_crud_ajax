@@ -19,3 +19,9 @@ Route::get('/', [UserController::class, 'index']);
 Route::get("/user_tbl", [UserController::class, 'userTbl']);
 
 Route::post("/user_save", [UserController::class, 'saveUser']);
+
+Route::get("/edit_user", [UserController::class, 'editModal']);
+
+Route::post("/update_user", [UserController::class, 'updateUser']);
+
+Route::get("/delete_user", [UserController::class, 'deleteUser']);

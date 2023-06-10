@@ -18,9 +18,10 @@
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->userDetails->mobile }}</td>
                 <td>
-                    <a href="#" title="Edit Data"><i class="fa fa-edit" style="font-size:30px"></i></a>
-                    <a href="#" class="text-danger" title="Delete Data"><i class="fa fa-remove"
-                            style="font-size:30px"></i></a>
+                    <a href="javascript:void(0)" onclick="editUserModal({{ $user->id }})" title="Edit Data"><i
+                            class="fa fa-edit" style="font-size:30px"></i></a>
+                    <a href="javascript:void(0)" onclick="deleteUser({{ $user->id }})" class="text-danger"
+                        title="Delete Data"><i class="fa fa-remove" style="font-size:30px"></i></a>
                 </td>
             </tr>
         @endforeach

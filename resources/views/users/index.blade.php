@@ -23,7 +23,7 @@
 
     </div>
 
-    <!-- Add User Modal -->
+    {{-- Add User Modal  --}}
     <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
@@ -82,6 +82,13 @@
             </div>
         </div>
     </div>
+    {{-- End User Modal --}}
+
+    {{-- Edit User modal --}}
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
+        aria-hidden="true">
+    </div>
+    {{-- End Edit User Modal --}}
 
     <script>
         $(document).ready(function() {
@@ -110,6 +117,7 @@
                             $('#userModal').modal('hide');
                             $("#serverErr").html('');
                             loadUserTbl();
+                            $("#userForm")[0].reset();
                         } else {
                             // console.log(res.errors.email[0]);
                             // $.notify("Some Error occure!", "error");
@@ -167,6 +175,63 @@
                     $.LoadingOverlay("hide");
                 }
             });
+        }
+
+        function editUserModal(userId) {
+            // console.log(userId);
+            $.ajax({
+                url: "{{ url('/edit_user') }}",
+                method: "GET",
+                data: {
+                    userId
+                },
+                // beforeSend: function() {
+                //     $.LoadingOverlay("show");
+                // },
+                success: function(res) {
+                    if (res.status) {
+                        $("#editModal").html(res.userEditModal);
+                        $("#editModal").modal("show");
+                        // $.LoadingOverlay("hide");
+                    }
+                }
+            });
+        }
+
+        function editFormSubmit() {
+
+            let form = document.querySelector("#editFormData");
+
+            $.ajax({
+                url: "{{ url('update_user') }}",
+                method: "POST",
+                data: new FormData(form),
+                dataType: "json",
+                contentType: false,
+                cache: false,
+                processData: false,
+                success: function(res) {
+
+                }
+            });
+        }
+
+        function deleteUser(userId) {
+            if (confirm("Are you sure want to delete this user.")) {
+                $.ajax({
+                    url: "{{ url('delete_user') }}",
+                    method: "GET",
+                    data: {
+                        userId
+                    },
+                    success: function(res) {
+                        if (res.status) {
+                            console.log(res.message);
+                            loadUserTbl();
+                        }
+                    }
+                });
+            }
         }
     </script>
 @endsection
