@@ -13,7 +13,7 @@
         @foreach ($userData as $user)
             <tr>
                 <th scope="row">1</th>
-                <td>Mark</td>
+                <td><img src="{{ url($user->userDetails->image) }}" alt="" width="80" height="80"></td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
                 <td>{{ $user->userDetails->mobile }}</td>

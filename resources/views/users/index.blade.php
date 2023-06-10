@@ -67,6 +67,7 @@
                         <div class="form-group">
                             <label for="image">Image</label>
                             <input type="file" class="form-control" id="image" name="image">
+                            <span id="imageErr" style="color:red"></span>
                         </div>
 
                         <div class="form-group">
@@ -103,12 +104,15 @@
                     },
                     success: function(res) {
                         if (res.status == true) {
+                            // $.notify("User data stored successfully.", "success");
                             $("#btnSave").removeAttr("disabled", "disabled");
                             $('#userForm').css("opacity", "");
                             $('#userModal').modal('hide');
                             $("#serverErr").html('');
+                            loadUserTbl();
                         } else {
                             // console.log(res.errors.email[0]);
+                            // $.notify("Some Error occure!", "error");
                             if (res.serverError) {
                                 $("#serverErr").html('Internal server error...');
                             } else {
@@ -141,6 +145,10 @@
                 $('#mobileErr').html(errObj.mobile[0]);
             else
                 $('#mobileErr').html('');
+            if (errObj.image)
+                $('#imageErr').html(errObj.image[0]);
+            else
+                $('#imageErr').html('');
         }
 
         function loadUserTbl() {

@@ -13,8 +13,6 @@ class UserController extends Controller
     function index()
     {
         try {
-            $userList = User::with('userDetails')->get();
-            return $userList;
             return view('users.index');
         } catch (\Throwable $th) {
 
@@ -47,9 +45,11 @@ class UserController extends Controller
                     // ->uncompromised()
                 ],
                 'mobile' => 'required|numeric',
+                'image' => 'mimes:jpeg,png,jpg,gif,svg'
+                // 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|size:1024'
             ], [
                 // Custom message is writen here...
-                'name.required' => 'Name field is required.'
+                'name.required' => 'Name field is required.',
             ]);
 
             if ($validation->fails()) {
@@ -67,9 +67,18 @@ class UserController extends Controller
             $user->save();
 
             $userDetails = new UserDetails;
-            $userDetails->user_id = $user->id;
+            $userDetails->u_id = $user->id;
             $userDetails->mobile = $req->mobile;
             $userDetails->address = $req->address;
+
+            if ($req->file('image')) {
+                // return public_path();
+                $imgDetails = $this->uploadImage($req->file('image'));
+                $userDetails->image = $imgDetails['imageName'];
+
+                // return $imgDetails;
+            }
+
             $userDetails->save();
 
             return response()->json([
@@ -83,5 +92,20 @@ class UserController extends Controller
                 'serverError' => $th->getMessage(),
             ]);
         }
+    }
+
+    public function uploadImage($file)
+    {
+
+        $imageName = $file->getClientOriginalName();
+        $mimesType = $file->getMimeType();
+        $fileNewName = "/users/profile_pic/" . rand(100, 100000) . '_' . $imageName;
+        $destinationPath = public_path() . "/users/profile_pic/";
+        $file->move($destinationPath, $fileNewName);
+        $fileData = [
+            'imageName' => $fileNewName,
+            'mimeType' => $mimesType
+        ];
+        return $fileData;
     }
 }
