@@ -37,6 +37,7 @@ class User extends Authenticatable
 
     public function userDetails(): HasOne
     {
-        return $this->hasOne(UserDetails::class);
+        // return $this->hasOne(UserDetails::class, 'foreign_key', 'primary_key');
+        return $this->hasOne(UserDetails::class, 'u_id', 'id');
     }
 }

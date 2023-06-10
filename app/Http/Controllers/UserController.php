@@ -12,10 +12,14 @@ class UserController extends Controller
 {
     function index()
     {
-        // echo '<pre>';
-        // print_r(User::with('userDetails')->get());
-        // die;
-        return view('users.index');
+        try {
+            $userList = User::with('userDetails')->get();
+            return $userList;
+            return view('users.index');
+        } catch (\Throwable $th) {
+
+            return $th->getMessage();
+        }
     }
     function userTbl()
     {
